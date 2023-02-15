@@ -25,5 +25,6 @@ summ.tbl <- function(dat, summ.by = NULL, dp = 1, caption = NULL){
     as_flex_table() %>%
     fontsize(size = 10) %>%
     theme_zebra() %>%
-    set_caption(caption)
+    set_caption(caption) %>%
+    set_table_properties(layout = "autofit")
 }
