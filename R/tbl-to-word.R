@@ -17,7 +17,7 @@ tbl.to.word <- function(tbl.list){
   map(names(tbl.list), function(x){
     tbl <- tbl.list[[x]]
     full.path <- str_c(out.path, today(), "_", x, ".docx")
-    save_as_docx(tbl, path = full.path)
+    flextable::save_as_docx(tbl, path = full.path)
     # browser()
   })
 }
