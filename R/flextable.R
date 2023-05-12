@@ -13,7 +13,7 @@
 #'
 #' @examples
 
-set.default.ft <- function(font.family = 'Calibri',
+ft.default <- function(font.family = 'Calibri',
                            font.size = 10,
                            layout = 'autofit',
                            padding = 6,
