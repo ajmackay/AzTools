@@ -1,6 +1,6 @@
 #' Basic Summary Table
 #'
-#' @param dat A dataframe to summarise
+#' @param dat A dataframe to summarise in wide format (one column for each variable to summarise)
 #' @param summ.by Variable to stratify summary table by
 #' @param dp Number of decimal places
 #' @param caption Table Caption
