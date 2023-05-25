@@ -7,7 +7,7 @@
 summ.tbl(dat, summ.by = NULL, dp = 1, caption = NULL)
 }
 \arguments{
-\item{dat}{A dataframe to summarise}
+\item{dat}{A dataframe to summarise in wide format (one column for each variable to summarise)}
 
 \item{summ.by}{Variable to stratify summary table by}
 

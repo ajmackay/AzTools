@@ -1,38 +1,101 @@
 #' Set Flextable Defaults
 #'
-#' @param font.family
-#' @param font.size
-#' @param layout
-#' @param padding
-#' @param theme_fun
-#' @param digits
-#' @param ...
+#' @param font.size Default is 10
+#' @param font.family Default is Calibri
+#' @param theme Default is vanilla
+#' @param padding Default is 6
 #'
-#' @return
+#' @return Flextable Defaults
+#' @export
+
+set.default.ft <- function(font.size = 10, font.family = 'Calibri', padding = 6, digits = 1, na.str = "-") {
+  flextable::set_flextable_defaults(
+    font.size = font.size,
+    font.family = font.family,
+    theme_fun = 'theme_vanilla',
+    padding = padding,
+    table.layout = 'autofit',
+    digits = digits,
+    na_str = na.str
+  )
+
+  cat(crayon::green('Flextable Defaults Set:\n', '- Font Size:', font.size, '\n - Font Family:', font.family,
+                    '\n - Padding:', padding, '\n - NA String:', na.str))
+
+  warning("Need to call colformat_double() after flextable() in order for digits to take effect")
+
+}
+
+#' Export a flextable into a .xlsx file
+#'
+#' @param table A flextable
+#' @param path Path to the Excel file to be created
+#' @return Returns an .xlsx file based on a flextable
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' ft <- flextable::flextable(head(mtcars))
+#' # color some cells in blue
+#' ft <- flextable::bg(ft, i=ft$body$dataset$disp>200, j=3, bg = "#7ed6df", part = "body")
+#' # color a few cells in yellow
+#' ft <- flextable::bg(ft, i=ft$body$dataset$vs==0, j=8, bg = "#FCEC20", part = "body")
+#' # export your flextable as a .xlsx in the current working directory
+#' exportxlsx(ft, filename ="myFlextable", path="path/to/the/excel_file.xlsx")
+#' }
 
-ft.default <- function(font.family = 'Calibri',
-                           font.size = 10,
-                           layout = 'autofit',
-                           padding = 6,
-                           theme_fun = 'theme_vanilla',
-                           digits = 3, ...) {
+exportxlsx = function(table, path) {
 
-  flextable::set_flextable_defaults(
-    font.family = font.family,
-    font.size = font.size,
-    layout = layout,
-    padding = padding,
-    theme_fun = theme_fun,
-    digits = digits)
+  # setwd(path) # Indique le repertoire ou sera enregistrer le fichier excel
 
-  if(digits != 3){
-    cat(crayon::red("Use colformat_double() to adjust digits"))
+  data = table$body$dataset
+  bgcolor = as.data.frame(table$body$styles$cells$background.color$data)
+
+  wb = openxlsx::createWorkbook()
+  openxlsx::addWorksheet(wb, "feuille1")
+  openxlsx::writeData(wb,1,data)
+
+  for (desc in 2:ncol(data)) {
+
+    for (prod in 1:nrow(data)) {
+
+      # on recupere la couleur de la cellule
+      cell.bgcolor = bgcolor[prod,desc]
+
+      # on cree un style pour la cellule
+      cell.style = openxlsx::createStyle(numFmt = "0.000", border = c("top", "bottom", "left", "right"), borderColour = "black", fgFill = ifelse(cell.bgcolor=="transparent","#FFFFFF",cell.bgcolor), halign = "center")
+
+      # on applique le style a la cellule
+      openxlsx::addStyle(wb,sheet=1,style = cell.style, rows = prod+1, cols = desc)
+
+    }
   }
 
-  cat(crayon::green("Flextable Default Set"))
+  openxlsx::saveWorkbook(wb,path, overwrite = TRUE)
 
 }
+
+
+#' Prepare and Output a Flextable
+#'
+#' @param dat Dataframe
+#' @param prep.names Turn Names into Titles
+#'
+#' @return flextable
+#' @export
+
+prep.flex <- function(dat, prep.names = TRUE) {
+  if(prep.names){
+    old.names <- names(dat)
+    new.names <- str_replace(old.names, "\\.|_", " ") %>%
+      str_to_title()
+
+    names(dat) <- new.names
+  }
+
+  dat %>%
+    flextable::flextable() %>%
+    flextable::colformat_double()
+}
+
 
