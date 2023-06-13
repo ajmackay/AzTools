@@ -8,7 +8,7 @@
 #' @return Flextable Defaults
 #' @export
 
-set.default.ft <- function(font.size = 10, font.family = 'Calibri', padding = 6, digits = 1, na.str = "-") {
+ft.set.default <- function(font.size = 10, font.family = 'Calibri', padding = 6, digits = 1, na.str = "-") {
   flextable::set_flextable_defaults(
     font.size = font.size,
     font.family = font.family,
@@ -44,7 +44,7 @@ set.default.ft <- function(font.size = 10, font.family = 'Calibri', padding = 6,
 #' exportxlsx(ft, filename ="myFlextable", path="path/to/the/excel_file.xlsx")
 #' }
 
-exportxlsx = function(table, path) {
+ft.xlsx = function(table, path) {
 
   # setwd(path) # Indique le repertoire ou sera enregistrer le fichier excel
 
@@ -84,18 +84,19 @@ exportxlsx = function(table, path) {
 #' @return flextable
 #' @export
 
-prep.flex <- function(dat, prep.names = TRUE) {
+ft.prep <- function(dat, prep.names = TRUE, digits = 1) {
   if(prep.names){
     old.names <- names(dat)
-    new.names <- str_replace(old.names, "\\.|_", " ") %>%
+    new.names <- str_replace_all(old.names, "\\.|_", " ") %>%
       str_to_title()
 
     names(dat) <- new.names
   }
 
   dat %>%
-    flextable::flextable() %>%
-    flextable::colformat_double()
+      flextable::flextable() %>%
+      flextable::colformat_double(digits = digits)
+
 }
 
 
@@ -136,3 +137,5 @@ ft.summary <- function(dat, summ.by = NULL, dp = 1, caption = NULL, include.p = 
     # fontsize(size = 10) %>%
     set_caption(caption)
 }
+
+

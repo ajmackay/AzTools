@@ -14,6 +14,8 @@ ft.summary(dat, summ.by = NULL, dp = 1, caption = NULL, include.p = FALSE)
 \item{dp}{Number of decimal places}
 
 \item{caption}{Table Caption}
+
+\item{include.p}{Include P value}
 }
 \value{
 A gtsummary table

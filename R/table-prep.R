@@ -7,7 +7,7 @@
 
 prep.names <- function(dat) {
   old.names <- names(dat)
-  new.names <- str_replace(old.names, "\\.|_", " ") %>%
+  new.names <- str_replace_all(old.names, "\\.|_", " ") %>%
     str_to_title()
 
   names(dat) <- new.names
