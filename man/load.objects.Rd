@@ -13,5 +13,5 @@ load.objects(dataset = "all-objects")
 Loads all objects saved in all-objects.RData into the environment
 }
 \description{
-Load all objects
+\code{load.objects()} Loads a specified .RData file (default is "all-objects.RData") from data/objects/ into the global environment
 }

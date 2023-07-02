@@ -15,5 +15,5 @@ save.object(obj, name)
 Saves the object in data/objects/
 }
 \description{
-Save a single object
+\code{save.object()} Saves a specified object as a .rds file in data/objects/
 }

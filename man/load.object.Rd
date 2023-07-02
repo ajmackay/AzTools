@@ -13,5 +13,6 @@ load.object(name)
 Loads the object from data/objects
 }
 \description{
-Load a Single Object
+\code{load.object()} Loads the specified name of the RDS object located in data/objects/.
+The .rds object must be assigned to an object in the workspace to be saved in the global environment.
 }
