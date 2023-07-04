@@ -1,6 +1,6 @@
-#' Arrange dataframe for ordering categories across facets
+#' Prepare dataframe for ordering categories across facets
 #' @description
-#' facet.arrange prepares a dataframe for easy ordering of a categorical variable across groups/facets used within ggplot.
+#' IN DEVELOPMENT. Prepares a dataframe for easy ordering of a categorical variable across groups/facets used within ggplot.
 #' Data must contain summarised counts and/or proportions of a categorical variable and a grouping variable that is used for faceting.
 #'
 #'
@@ -13,16 +13,14 @@
 #' @return Dataframe with categorical variable prepped for faceting
 #' @export
 #'
-#' @examples
-#'
 facet.arrange <- function(dat, facet, x, y, smallest.left = TRUE){
   # browser()
-
+  ### ADD CHECK FOR GROUPED DF (will fail if grouped)
   x.name <- names(select(dat, {{x}}))
   y.name <- names(select(dat, {{y}}))
 
-  if(is.numeric(class(dat[[x.name]]))) stop("\"x\" must be a character or factor variable")
-  if(!is.numeric(class(dat[[y.name]]))) warning(crayon::red("\"y\" must be a numeric summary of x"))
+  if(is.numeric(dat[[x.name]])) stop("\"x\" must be a character or factor variable")
+  if(!is.numeric(dat[[y.name]])) warning(crayon::red("\"y\" must be a numeric summary of x"))
 
   dat <- dat %>%
     group_by({{facet}}, {{x}}) %>%

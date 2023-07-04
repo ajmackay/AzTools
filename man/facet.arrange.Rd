@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotting.R
 \name{facet.arrange}
 \alias{facet.arrange}
-\title{Arrange dataframe for ordering categories across facets}
+\title{Prepare dataframe for ordering categories across facets}
 \usage{
 facet.arrange(dat, facet, x, y, smallest.left = TRUE)
 }
@@ -21,6 +21,6 @@ facet.arrange(dat, facet, x, y, smallest.left = TRUE)
 Dataframe with categorical variable prepped for faceting
 }
 \description{
-facet.arrange prepares a dataframe for easy ordering of a categorical variable across groups/facets used within ggplot.
+IN DEVELOPMENT. Prepares a dataframe for easy ordering of a categorical variable across groups/facets used within ggplot.
 Data must contain summarised counts and/or proportions of a categorical variable and a grouping variable that is used for faceting.
 }
