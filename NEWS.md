@@ -1,3 +1,3 @@
-# AzTools (development version)
+# AzTools 0.1.0
 
 * Initial CRAN submission.
