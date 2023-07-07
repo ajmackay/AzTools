@@ -1,6 +1,6 @@
 Package: AzTools
 Title: Tools for Az
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: 
     person("Aaron", "Mackay", , "mackay_aaron@protonmail.com", role = c("aut", "cre"))
 Description: This package is for tools that I use
