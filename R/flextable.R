@@ -1,3 +1,44 @@
+#' Save Flex Table
+#' @description
+#' Saves a flextable object in the preferred format to the tables folder in the output directory
+#'
+#'
+#' @param dat Flextable Object
+#' @param name String: Name of file to be saved
+#' @param format Format for file saving (default .docx)
+#'
+#' @return File
+#' @export
+#'
+save.flex <- function(dat, name, format = c("word")){
+  # browser()
+  if(any(dir.exists(c("output", "outputs")))){
+    output.dir <- stringr::str_c(list.dirs()[str_detect(list.dirs(), "^./outpu[ts]$")], "/")
+
+    if(any(stringr::str_detect(list.dirs(output.dir), "tables"))){
+      output.dir <- stringr::str_c(output.dir, "tables/")
+    } else{
+      dir.create(output.dir, "tables")
+      output.dir <- stringr::str_c(output.dir, "tables/")
+    }
+
+  } else{
+    # dir.create("output")
+    dir.create("output/tables")
+    output.dir <- "output/tables/"
+  }
+
+  if(format == "word" & class(dat) == 'flextable'){
+    full.dir <- stringr::str_c(output.dir, name, ".docx")
+
+    flextable::save_as_docx(dat, path = full.dir)
+
+    cat(crayon::green(stringr::str_glue("Table saved in {full.dir}")))
+  }
+
+}
+
+
 #' Set Flextable Defaults
 #'
 #' @param font.size Default is 10
