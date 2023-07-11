@@ -141,7 +141,7 @@ ft.prep <- function(dat, prep.names = TRUE, digits = 1) {
 }
 
 
-#' Basic Summary Table
+#' DEPRECIATED please use flex.summary()
 #'
 #' @param dat A dataframe to summarise in wide format (one column for each variable to summarise)
 #' @param summ.by Variable to stratify summary table by
@@ -179,4 +179,43 @@ ft.summary <- function(dat, summ.by = NULL, dp = 1, caption = NULL, include.p = 
     set_caption(caption)
 }
 
+
+
+#' Basic Summary Table
+#'
+#' @param dat A dataframe to summarise in wide format (one column for each variable to summarise)
+#' @param summ.by Variable to stratify summary table by
+#' @param dp Number of decimal places
+#' @param caption Table Caption
+#' @param include.p Include P value
+#'
+#' @return A gtsummary table
+#' @export
+#'
+#' @examples
+#'
+#'
+flex.summary() <- function(dat, summ.by = NULL, dp = 1, caption = NULL, include.p = FALSE){
+  tbl.summary <- gtsummary::tbl_summary(dat,
+                             by = summ.by,
+                             statistic = list(all_continuous() ~ "{mean} ({sd})"),
+                             digits = list(
+                               all_continuous() ~ dp,
+                               all_categorical() ~ dp
+                             ),
+                             missing_text = "Missing",
+                             sort = list(everything() ~ "frequency")) %>%
+    gtsummary::bold_labels()
+
+  if(include.p){
+    tbl.summary <- tbl.summary %>%
+      gtsummary::add_p()
+  }
+
+  tbl.summary %>%
+    gtsummary::as_flex_table() %>%
+    flextable::colformat_double(digits = dp) %>%
+    # fontsize(size = 10) %>%
+    flextable::set_caption(caption)
+}
 
