@@ -2,6 +2,7 @@
 
 S3method(time,extract)
 export(facet.arrange)
+export(flex.summary)
 export(ft.prep)
 export(ft.set.default)
 export(ft.summary)

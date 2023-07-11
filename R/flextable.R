@@ -152,7 +152,6 @@ ft.prep <- function(dat, prep.names = TRUE, digits = 1) {
 #' @return A gtsummary table
 #' @export
 #'
-#' @examples
 #'
 #'
 ft.summary <- function(dat, summ.by = NULL, dp = 1, caption = NULL, include.p = FALSE){
@@ -190,12 +189,11 @@ ft.summary <- function(dat, summ.by = NULL, dp = 1, caption = NULL, include.p = 
 #' @param include.p Include P value
 #'
 #' @return A gtsummary table
-#' @export
-#'
-#' @examples
+#' @export flex.summary
 #'
 #'
-flex.summary() <- function(dat, summ.by = NULL, dp = 1, caption = NULL, include.p = FALSE){
+#'
+flex.summary <- function(dat, summ.by = NULL, dp = 1, caption = NULL, include.p = FALSE){
   tbl.summary <- gtsummary::tbl_summary(dat,
                              by = summ.by,
                              statistic = list(all_continuous() ~ "{mean} ({sd})"),
