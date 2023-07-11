@@ -13,7 +13,7 @@
 save.flex <- function(dat, name, format = c("word")){
   # browser()
   if(any(dir.exists(c("output", "outputs")))){
-    output.dir <- stringr::str_c(list.dirs()[str_detect(list.dirs(), "^./outpu[ts]$")], "/")
+    output.dir <- stringr::str_c(list.dirs()[str_detect(list.dirs(), "^./outputs*$")], "/")
 
     if(any(stringr::str_detect(list.dirs(output.dir), "tables"))){
       output.dir <- stringr::str_c(output.dir, "tables/")
