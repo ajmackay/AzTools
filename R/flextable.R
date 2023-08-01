@@ -47,9 +47,9 @@ save.flex <- function(dat, name, format = c("word")){
 #' @param padding Default is 6
 #'
 #' @return Flextable Defaults
-#' @export
+#' @export set.flex.default
 
-ft.set.default <- function(font.size = 10, font.family = 'Calibri', padding = 6, digits = 1, na.str = "-") {
+set.flex.default <- function(font.size = 10, font.family = 'Calibri', padding = 6, digits = 1, na.str = "-") {
   flextable::set_flextable_defaults(
     font.size = font.size,
     font.family = font.family,

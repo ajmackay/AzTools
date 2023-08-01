@@ -1,3 +1,32 @@
+#' DEPRECIATING: Use set.flex.default() instead
+#'
+#' @param font.size Default is 10
+#' @param font.family Default is Calibri
+#' @param theme Default is vanilla
+#' @param padding Default is 6
+#'
+#' @return Flextable Defaults
+#' @export
+
+ft.set.default <- function(font.size = 10, font.family = 'Calibri', padding = 6, digits = 1, na.str = "-") {
+  flextable::set_flextable_defaults(
+    font.size = font.size,
+    font.family = font.family,
+    theme_fun = 'theme_vanilla',
+    padding = padding,
+    table.layout = 'autofit',
+    digits = digits,
+    na_str = na.str
+  )
+
+  cat(crayon::green('Flextable Defaults Set:\n', '- Font Size:', font.size, '\n - Font Family:', font.family,
+                    '\n - Padding:', padding, '\n - NA String:', na.str))
+
+  warning("Need to call colformat_double() after flextable() in order for digits to take effect")
+
+}
+
+
 #' USE prep.flex() INSTEAD Prepare and Output a Flextable
 #'
 #' @param dat Dataframe
