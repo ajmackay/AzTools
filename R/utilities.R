@@ -11,6 +11,7 @@ load.figs <- function(file = "objects/figs-tables"){
   cat(crayon::green("Figures and Tables loaded in Global Environment"))
 }
 
+
 #' Save Figures and Tables
 #'
 #' @param dir Folder where to save object
@@ -20,9 +21,10 @@ load.figs <- function(file = "objects/figs-tables"){
 #' @export
 #'
 save.figs <- function(dir = 'objects/', name = 'figs-tables'){
-  save(list = ls()[str_detect(ls(), "plt\\.|tbl\\.|fig\\.")], file = str_c(dir, name, ".RData"))
+  save(list = ls(pattern = "plt\\.|tbl\\.|fig\\."), file = str_c(dir, name, ".RData"))
   cat(crayon::green(str_glue("Figures and Tables saved in {dir}{name}.RData")))
 }
+
 
 
 #' Stop R session without error
