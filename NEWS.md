@@ -1,3 +1,5 @@
+# AzTools 0.3.2
+
 # AzTools 0.3.1
 
 # AzTools 0.3.0
