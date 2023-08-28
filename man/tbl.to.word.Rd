@@ -4,7 +4,7 @@
 \alias{tbl.to.word}
 \title{Save flextable in a word doc with}
 \usage{
-tbl.to.word(tbl.list)
+\method{tbl}{to.word}(tbl.list)
 }
 \arguments{
 \item{dat}{A dataframe to summarise}
