@@ -1,3 +1,23 @@
+#' Format dates into human readable format
+#'
+#' @param start Starting date
+#' @param end End date
+#'
+#' @return String
+#' @export format_date
+#'
+format_date <- function(start, end) {
+  if(!any(class(start) %in% c("POSIXct", "Date"))) {stop("Start variable does not appear to be a date variable")}
+  if(!any(class(end) %in% c("POSIXct", "Date"))) {stop("End variable does not appear to be a date variable")}
+
+  formatted.date <- str_c(format(start, "%d/%m/%y"), " to ", format(end, "%d/%m/%y"))
+
+  formatted.date
+
+}
+
+
+
 #' Load Figures and Tables .RData
 #'
 #' @param file Location and name of figures and tables .RData object

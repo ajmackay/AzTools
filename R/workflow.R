@@ -16,7 +16,7 @@
 create.project = function(project.name, alt.dir = NULL, shiny = FALSE, data.ticket = FALSE, default.queries = NULL, initial.commit = TRUE){
   project.name = str_trim(project.name)
   if(is.null(alt.dir)){
-    project.dir = str_c(.r.dir, "/", project.name)
+    project.dir = str_c(.r.dir, project.name)
   }else{
     project.dir = str_c(alt.dir,"/", project.name)
   }
