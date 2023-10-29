@@ -1,4 +1,4 @@
-# AzTools (development version)
+# AzTools 0.5.1
 
 # AzTools 0.5.0
 
