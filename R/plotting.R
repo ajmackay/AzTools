@@ -1,3 +1,42 @@
+#' stop_gg
+#' @description
+#' A function that calls camcorder::gg_stop_recording()
+#'
+#'
+#' @return Stops record_gg()
+#' @export stop_gg
+#'
+stop_gg <- function() {
+  camcorder::gg_stop_recording()
+}
+
+
+#' record_gg
+#' @description
+#' Uses camcorder::gg_record() to save and view ggplots as they would appear when exported.
+#' When record_gg is used, subsequent ggplots will be saved in the specified folder (default 'outputs/imgs') and the plot
+#' will be viewed in the viewer pane. Use stop_gg() to stop record_gg()
+#'
+#'
+#' @param dir The directory in which to save plots to (default is outputs/imgs)
+#' @param width Width in inches of the image (default is 9)
+#' @param height Height is calculated as a function of width. It will always be less than width
+#' @param dpi Default 300
+#'
+#' @return Image in folder
+#' @export record_gg
+#'
+record_gg <- function(dir = 'outputs/imgs', width = 9, dpi = 300) {
+  camcorder::gg_record(
+  dir = ings,
+  width = width,
+  height = width * 9 / 16,
+  dpi = dpi,
+  bg = NULL
+)
+}
+
+
 #' Prepare dataframe for ordering categories across facets
 #' @description
 #' IN DEVELOPMENT. Prepares a dataframe for easy ordering of a categorical variable across groups/facets used within ggplot.
