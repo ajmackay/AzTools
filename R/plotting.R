@@ -1,3 +1,107 @@
+#' save_gg
+#' @description
+#' Saves a ggplot as a png and prints to the viewer plane
+#'
+#'
+#' @param plot A ggplot
+#' @param file.name
+#' @param overwrite
+#' @param dir
+#' @param width
+#' @param height
+#' @param dpi
+#'
+#' @return
+#' @export save_gg
+#'
+save_gg <- function(plot, file.name = NULL, overwrite = TRUE, dir = 'outputs/imgs/', width = 9, height = NULL, dpi = 300) {
+  # browser()
+  if(!"ggplot" %in% class(plot)) {
+    stop("Object does not appear to be a ggplot object. Please try again.")
+  }
+
+  if(is.null(height)) {
+    height <- width * 9 / 16
+  }
+
+  # Initialise camcorder to save object to dir
+  camcorder::gg_record(
+    dir = dir,
+    width = width,
+    height = height,
+    dpi = 300,
+    bg = NULL
+  ) %>% suppressWarnings()
+
+  print(plot)
+
+  camcorder::gg_stop_recording()
+
+  # Gets the name of the most recent file in folder (the one created by camcorder)
+  printed_file <- file.info(list.files(dir, full.names = TRUE)) %>%
+    arrange(desc(ctime)) %>% slice(1) %>% rownames()
+
+  if(is.null(file.name)){
+    new_name <- str_c(str_extract(printed_file, ".{19}"), ".png") # Default new names are given the format YYYY_MM_DD_HH_MM_SS
+
+    file.rename(printed_file, str_c(dir, new_name))
+  } else {
+    new_name <- str_c(file.name, ".png")
+
+    if(overwrite) {
+      file.rename(printed_file, str_c(dir, new_name))
+    } else(stop("Need to create options for overwrite"))
+  }
+  cat(crayon::green(str_glue("File Saved at {dir}{new_name}")))
+}
+
+
+#' view_gg
+#' @description
+#' Prints a ggplot to the viewer window.
+#' view_gg calls camcorder::gg_record() which prints a ggplot to the viewer window, so that plot measurements can be viewed more accurately.
+#'
+#'
+#' @param plot ggplot object
+#' @param width Width of the plot in inches
+#' @param height Default is for height to be set as a function of width. This can be overwritten with a manual value
+#' @param dpi The dpi. Default is 300.
+#'
+#' @return An Image
+#' @export view_gg
+#'
+view_gg <- function(plot, width = 9, height = NULL, dpi = 300) {
+  if(!"ggplot" %in% class(plot)) {
+    stop("Object does not appear to be a ggplot object. Please try again.")
+  }
+
+  if(is.null(height)){
+    height <- width * 9 / 16
+  }
+
+  camcorder::gg_record(
+    dir = "tmp/",
+    width = width,
+    height = height,
+    dpi = 300,
+    bg = NULL
+  ) %>% suppressWarnings()
+
+  print(plot)
+
+  camcorder::gg_stop_recording()
+
+  # Gets the name of the most recent file in folder (the one created by camcorder)
+  printed_file <- file.info(list.files("tmp/", full.names = TRUE)) %>%
+    arrange(desc(ctime)) %>% slice(1) %>% rownames()
+
+  file.remove(printed_file)
+
+
+
+}
+
+
 #' stop_gg
 #' @description
 #' A function that calls camcorder::gg_stop_recording()
@@ -28,7 +132,7 @@ stop_gg <- function() {
 #'
 record_gg <- function(dir = 'outputs/imgs', width = 9, dpi = 300) {
   camcorder::gg_record(
-  dir = ings,
+  dir = imgs,
   width = width,
   height = width * 9 / 16,
   dpi = dpi,
