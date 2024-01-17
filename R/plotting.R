@@ -14,7 +14,7 @@
 #' @return
 #' @export save_gg
 #'
-save_gg <- function(plot, file.name = NULL, overwrite = TRUE, dir = 'outputs/imgs/', width = 9, height = NULL, dpi = 300) {
+save_gg <- function(plot, file.name = NULL, overwrite = TRUE, dir = 'outputs/imgs/', width = 9, height = NULL, dpi = 300, ...) {
   # browser()
   if(!"ggplot" %in% class(plot)) {
     stop("Object does not appear to be a ggplot object. Please try again.")
@@ -30,7 +30,9 @@ save_gg <- function(plot, file.name = NULL, overwrite = TRUE, dir = 'outputs/img
     width = width,
     height = height,
     dpi = 300,
-    bg = NULL
+    bg = NULL,
+    device = ...
+
   ) %>% suppressWarnings()
 
   print(plot)
