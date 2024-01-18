@@ -62,6 +62,8 @@ save_gg <- function(plot, file.name = NULL, format = "png", overwrite = TRUE, di
     } else(stop("Need to create options for overwrite"))
   }
   cat(crayon::green(str_glue("File Saved at {dir}{new_name}")))
+
+  shell.exec(str_c(dir, new_name))
 }
 
 
