@@ -1,6 +1,6 @@
 #' save_gg
 #' @description
-#' Saves a ggplot as a png and prints to the viewer plane
+#' Saves a ggplot to the specified format and prints to the viewer plane
 #'
 #'
 #' @param plot A ggplot
@@ -10,11 +10,12 @@
 #' @param width
 #' @param height
 #' @param dpi
+#' @param format The file format (default .png)
 #'
 #' @return
 #' @export save_gg
 #'
-save_gg <- function(plot, file.name = NULL, overwrite = TRUE, dir = 'outputs/imgs/', width = 9, height = NULL, dpi = 300, ...) {
+save_gg <- function(plot, file.name = NULL, format = "png", overwrite = TRUE, dir = 'outputs/imgs/', width = 9, height = NULL, dpi = 300) {
   # browser()
   if(!"ggplot" %in% class(plot)) {
     stop("Object does not appear to be a ggplot object. Please try again.")
@@ -24,6 +25,11 @@ save_gg <- function(plot, file.name = NULL, overwrite = TRUE, dir = 'outputs/img
     height <- width * 9 / 16
   }
 
+  # Remove . from format
+  if(str_detect(format, "^\\.")) {
+    format <- str_remove(format, "^\\.")
+  }
+
   # Initialise camcorder to save object to dir
   camcorder::gg_record(
     dir = dir,
@@ -31,7 +37,7 @@ save_gg <- function(plot, file.name = NULL, overwrite = TRUE, dir = 'outputs/img
     height = height,
     dpi = 300,
     bg = NULL,
-    device = ...
+    device = format
 
   ) %>% suppressWarnings()
 
@@ -41,17 +47,18 @@ save_gg <- function(plot, file.name = NULL, overwrite = TRUE, dir = 'outputs/img
 
   # Gets the name of the most recent file in folder (the one created by camcorder)
   printed_file <- file.info(list.files(dir, full.names = TRUE)) %>%
-    arrange(desc(ctime)) %>% slice(1) %>% rownames()
+    arrange(desc(ctime)) %>% slice(1) %>% rownames() %>%
+    str_remove(dir)
 
   if(is.null(file.name)){
-    new_name <- str_c(str_extract(printed_file, ".{19}"), ".png") # Default new names are given the format YYYY_MM_DD_HH_MM_SS
+    new_name <- str_c(str_extract(printed_file, ".{19}"), ".", format) # Default new names are given the format YYYY_MM_DD_HH_MM_SS
 
-    file.rename(printed_file, str_c(dir, new_name))
+    file.rename(str_c(dir, printed_file), str_c(dir, new_name))
   } else {
-    new_name <- str_c(file.name, ".png")
+    new_name <- str_c(file.name, ".", format)
 
     if(overwrite) {
-      file.rename(printed_file, str_c(dir, new_name))
+      file.rename(str_c(dir, printed_file), str_c(dir, new_name))
     } else(stop("Need to create options for overwrite"))
   }
   cat(crayon::green(str_glue("File Saved at {dir}{new_name}")))

@@ -122,9 +122,9 @@ flex2xl = function(table, path) {
 #' @param prep.names Turn Names into Titles
 #'
 #' @return flextable
-#' @export prep.flex
+#' @export prep_flex
 
-prep.flex <- function(dat, prep.names = TRUE, digits = 1) {
+prep_flex <- function(dat, prep.names = TRUE, digits = 1) {
   if(prep.names){
     old.names <- names(dat)
     new.names <- str_replace_all(old.names, "\\.|_", " ") %>%

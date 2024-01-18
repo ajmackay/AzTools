@@ -41,5 +41,4 @@ Split a string
 \examples{
 x <- "alpha,bravo,charlie,delta"
 str_split_one(x, pattern = ",")
-str_split_one(x, )
 }

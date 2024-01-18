@@ -7,6 +7,7 @@
 save_gg(
   plot,
   file.name = NULL,
+  format = "png",
   overwrite = TRUE,
   dir = "outputs/imgs/",
   width = 9,
@@ -17,8 +18,8 @@ save_gg(
 \arguments{
 \item{plot}{A ggplot}
 
-\item{dpi}{}
+\item{format}{The file format (default .png)}
 }
 \description{
-Saves a ggplot as a png and prints to the viewer plane
+Saves a ggplot to the specified format and prints to the viewer plane
 }
