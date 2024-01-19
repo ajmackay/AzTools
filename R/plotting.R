@@ -63,7 +63,7 @@ save_gg <- function(plot, file.name = NULL, format = "png", overwrite = TRUE, di
   }
   cat(crayon::green(str_glue("File Saved at {dir}{new_name}")))
 
-  shell.exec(str_c(dir, new_name))
+  shell.exec(normalizePath(str_c(dir, new_name)))
 }
 
 

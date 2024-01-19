@@ -38,3 +38,5 @@ library(AzTools)
 Function to post issues to github
 
 <code>post.issue \<- function(title, body) { gh::gh(endpoint = "POST /repos/ajmackay/AzTools/issues", title = title, body = body) }</code>
+
+-   Add dummy data

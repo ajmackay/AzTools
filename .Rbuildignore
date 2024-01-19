@@ -1,3 +1,5 @@
 ^AzTools\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
+^sandbox\.R$
+^sandbox$

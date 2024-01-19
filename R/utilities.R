@@ -66,3 +66,8 @@ stop_quietly <- function() {
 
 
 
+clean_filename = function(x){
+  str_replace_all(x, "(?<!^\\w):|<|>|\"|\\||\\?|\\*|=", "_") %>%
+    str_trim()
+}
+
