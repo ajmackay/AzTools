@@ -1,149 +1,69 @@
-x <- tibble(x = seq(1:5), y = x)
+prep.table = function(data, digits = 2, format.numeric = TRUE, format.date = FALSE, row.order = list(), merge.rows = NULL, spanner = TRUE,hide.cols = NULL, vars = "all", ...) {
+  if (is.empty(data)) {
+    data = tibble(Message = "This table is empty")
+  }
+  original.names = names(data)
 
-plt <- ggplot(x, aes(x = x, y = y)) +
-  geom_point()
+  data = row.order(data, row.order = row.order)
 
-
-
-
-create.project <- function (project.name, dir, github = TRUE, initial.commit = TRUE){
-
-  project.name <- str_trim(project.name)
-
-  project.dir <- str_glue("~/{dir}/{project.name}")
-
-  if(dir.exists(project.dir)) {
-    stop("Folder with this name already exists")
+  if(format.numeric) {
+    data <- mutate(data, across(where(is.numeric), ~format.number(.x, digits)))
+  } else {
+    data = mutate(data, across(where(is.numeric), ~round(.x, digits)), across(everything(), as.character))
   }
 
-  dir.create(project.dir)
-  setwd(project.dir)
-  .GlobalEnv$.working.d = project.dir
-  R.utils::copyDirectory(system.file("template", package = "dcutilities"),
-                         project.dir)
-
-
-  file.rename("PROJECT_NAME.Rproj", str_c(project.name, ".Rproj"))
-  clean.project.name = str_replace_all(project.name, " ", "-")
-  readLines("quarto-template.qmd") %>% str_replace("@REPORT-NAME-HTML",
-                                                   str_c(clean.project.name, ".html")) %>% str_replace("@REPORT-NAME-QMD",
-                                                                                                       str_c(clean.project.name, ".qmd")) %>% str_replace("@REPORT-NAME",
-                                                                                                                                                          project.name) %>% writeLines("quarto-template.qmd")
-  file.rename("quarto-template.qmd", str_c(clean.project.name,
-                                           ".qmd"))
-  document.name = str_replace_all(project.name, " ", "-")
-  readLines("word-template.qmd") %>% str_replace("@OUTPUT-NAME",
-                                                 str_c(document.name, ".docx")) %>% str_replace("@TEMPLATE-NAME",
-                                                                                                str_c(document.name, "_word.qmd")) %>% str_replace("@REPORT-NAME",
-                                                                                                                                                   project.name) %>% writeLines("word-template.qmd")
-  saveRDS(list(), "./cache/outputs")
-
-  if (initial.commit) {
-    git2r::init()
-    git.add()
-    git.commit(message = "initial")
-  }
-  invisible(settings(reset = TRUE))
-}
-
-
-
-
-new.project = function(project.name, alt.dir = NULL, shiny = FALSE, data.ticket = FALSE, default.queries = NULL, initial.commit = TRUE){
-  project.name = str_trim(project.name)
-  if(is.null(alt.dir)){
-    project.dir = str_c(.r.dir,project.name)
-  }else{
-    project.dir = str_c(alt.dir,"/", project.name)
+  if(format.date) {
+    data <- mutate(data, across(where(is.POSIXt), ~format.date(.x, ...)))
+    data <- mutate(data, across(where(is.Date), ~format.date(.x, ...)))
   }
 
-  if(dir.exists(project.dir)){
-    stop("Folder with this name already exists")
+  data.h = merge.rows(data, merge.rows) %>% prettify(vars = vars, ..., underscore = !spanner) %>% mutate(across(where(is.numeric), ~to.char(.x, digits)), across(everything(), as.character))
+  grouping.vars = group_vars(data.h)
+  var.names = names(data.h)
+  if ("labels" %not.in% names(list(...))) {
+    labels = TRUE
+  } else {
+    labels = list(...)$labels
   }
-  project.dir =
-    str_replace_all(project.dir, "//", "/") %>%
-    clean.filename()
-  dir.create(project.dir)
-  setwd(project.dir)
-  .GlobalEnv$.working.d = project.dir
-  R.utils::copyDirectory(system.file("template", package = "dcutilities"), project.dir)
+  if (labels) {
+    prettify.args = list(...)[which(names(list(...)) %in% c("abbreviations", "lowercase", "pronouns"))]
 
-  # Alternative Template
-  if(getOption("dcutilities.scripts.setup", default = "standard") == "alternate") {
-    # Copy over alternate scripts
-    R.utils::removeDirectory("scripts", recursive = TRUE)
-    R.utils::copyDirectory(system.file("alternate", package = "dcutilities"), project.dir)
   }
+  if (getOption("dcutilities.prep.table", default = "flex") == "flex") {
+    #  flextable::set_flextable_defaults(font.family = "Calibri", font.size = 10, font.color = "black", table.layout = "autofit", padding = 3, line_spacing = 1.2, arraystretch = 1.2, tabcolsep = 1)
+    data.h = relocate(data.h, all_of(grouping.vars))
+    to.merge = c(grouping.vars, merge.rows)
 
+    keys = names(data.h)
+    if(!is.null(hide.cols)){
 
-  file.rename("PROJECT_NAME.Rproj", str_c(project.name, ".Rproj"))
-
-
-  # clean.project.name = str_replace_all(project.name, " ", "-")
-  clean.project.name = clean.filename(project.name) %>% str_replace_all( " ", "-")
-
-  readLines("quarto-template.qmd") %>%
-    str_replace("@REPORT-NAME-HTML", str_c(clean.project.name, ".html")) %>%
-    str_replace("@REPORT-NAME-QMD", str_c(clean.project.name, ".qmd"))  %>%
-    str_replace("@REPORT-NAME", project.name) %>%
-    writeLines("quarto-template.qmd")
-
-  readLines("quarto-template-v2.qmd") %>%
-    str_replace("@REPORT-NAME", str_c(clean.project.name, "2")) %>%
-    writeLines("quarto-template-v2.qmd")
-
-  file.rename("quarto-template-v2.qmd", str_c(clean.project.name, "2.qmd"))
-
-
-  file.rename("quarto-template.qmd", str_c(clean.project.name, ".qmd"))
-
-  document.name = str_replace_all(project.name, " ", "-")
-
-  # Update README title
-  readLines("README.md") %>%
-    str_replace("@PROJECT-NAME", project.name) %>%
-    writeLines("README.md")
-
-
-
-
-  saveRDS(list(), "./cache/outputs")
-
-  if(!is.null(default.queries)){
-    library(rforce)
-
-
-    target.queries =
-      map_chr(default.queries, function(query) {
-        switch(query, Cases = "cases", NPI = "npi",
-               `Contributing Factors` = "contributing.factor", Milestones = "milestones",
-               `Milestone Breaches` = "kpi.breaches")
-      }) %>%
-      str_c(collapse = "|")
-
-
-    tibble(queries = system.file("default.queries", package = "rforce") %>% list.files(full.names = TRUE)) %>%
-      filter(str_detect(queries, target.queries)) %>%
-      pull(queries) %>%
-      walk(~file.copy(.x, "./cache/queries"))
-
-    # if("rforce" %not.in% (.packages())){
-    #   library(rforce)
-    # }
-    # map(default.queries, function(query){
-    #   query.name = switch(query, "Cases" = "case.q", NPI = "npi.q", "Contributing Factors" = "cf.q", "Milestones" = "milestone.q", "Milestone Breaches" = "breach.q")
-    #   create.default(query.name, query)
-    # }) %>%
-    #   save.queries()
-    .GlobalEnv$query.list = load.queries()
+      to.hide = which(original.names %in% hide.cols)
+      keys = keys[-to.hide]
+    }
+    t = flextable::flextable(data.h, col_keys = keys) %>% flextable::hline()
+    if (!is.empty(to.merge)) {
+      t = flextable::merge_v(t, j = to.merge) %>% flextable::valign(j = to.merge, valign = "top")
+    }
+    t = flextable::separate_header(t, split = "_")
+    if (labels) {
+      t = t %>% flextable::labelizor(part = "header", labels = function(x) {
+        pretty.labels(x, ...)
+      })
+    }
+  } else {
+    row.names = var.names[!var.names %in% grouping.vars][1]
+    row.names = which(var.names == row.names)
+    row.names = names(data.h)[row.names]
+    t = gt(data.h, rowname_col = row.names) %>% tab_stubhead(row.names)
+    if (spanner) {
+      t = tab_spanner_delim(t, "_")
+    }
+    if (labels) {
+      t = text_transform(t, function(x) {
+        prettify.args$word = x
+        do.call(initial.upper, prettify.args)
+      }, cells_column_labels())
+    }
   }
-
-  if(initial.commit){
-    git2r::init()
-    git.add()
-    git.commit(message = "initial")
-  }
-
-  invisible(settings(reset = TRUE))
-
+  return(t)
 }
