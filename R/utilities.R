@@ -1,10 +1,28 @@
+#' Paste Path
+#'
+#' @return string
+#' @export
+#'
+paste_path <- function() {
+    raw_dir <- readClipboard()
+    if (is.null(raw_dir)) {
+      stop("Oops, your clipboard appears to be empty")
+    }
+    if (!str_detect(raw_dir, "\\\\")) {
+      stop(stringr::str_glue("Hmm it seems you haven't provided a windows file directory path: \n{format(raw_dir)}"))
+    }
+    str_replace_all(raw_dir, "\\\\", "/")
+
+}
+
+
 #' Format dates into human readable format
 #'
 #' @param start Starting date
 #' @param end End date
 #'
 #' @return String
-#' @export format_date
+#' @export
 #'
 format_date <- function(start, end) {
   if(!any(class(start) %in% c("POSIXct", "Date"))) {stop("Start variable does not appear to be a date variable")}

@@ -4,7 +4,7 @@
 \alias{create_project}
 \title{Create New R Project}
 \usage{
-create_project(name, dir, initial_commit = TRUE)
+create_project(name, dir, init_git = TRUE)
 }
 \arguments{
 \item{name}{Name of the Project}

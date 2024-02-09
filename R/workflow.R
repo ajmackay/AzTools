@@ -12,7 +12,7 @@
 #' @returns               Nothing
 #' @export
 
-create_project <- function(name, dir, initial_commit = TRUE) {
+create_project <- function(name, dir, init_git = TRUE) {
   name <- stringr::str_c(name)
 
   # Join Directory and Name
@@ -27,18 +27,18 @@ create_project <- function(name, dir, initial_commit = TRUE) {
 
   dir.create(proj_dir)
   setwd(proj_dir)
-  .GlobalEnv$.working.d <- proj_dir # Set working directory as new project? -- why do I need this if already using setwd()?
+  .GlobalEnv$.working.d <- proj_dir # Set global environment as new project directory
 
   R.utils::copyDirectory(system.file("template", package = "AzTools"), proj_dir)
 
-  file.rename("PROJECT_NAME.Proj", str_c(name, ".Rproj"))
+  file.rename("PROJECT_NAME.Rproj", str_c(name, ".Rproj"))
 
   clean_name <- clean_filename(name) %>% str_replace_all(" ", "-")
 
-  if(initial_commit) {
+  if(init_git) {
     git2r::init()
-    git.add()
-    git.commit(message = "initial")
   }
+
+  # Look at usethis::create_project to see what needs to be done
 
 }

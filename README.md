@@ -29,9 +29,10 @@ library(AzTools)
 1.  Make Changes
 2.  usethis::use_package("any new dependencies")
 3.  devtools::document()
-4.  load
+4.  devtools::load_all()
 5.  devtools::check()
 6.  usethis::version
+7.  devtools::build()
 
 ## Function Ideas
 
