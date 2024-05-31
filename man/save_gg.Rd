@@ -9,16 +9,21 @@ save_gg(
   file.name = NULL,
   format = "png",
   overwrite = TRUE,
-  dir = "outputs/imgs/",
+  dir = "outputs/figs/",
   width = 9,
   height = NULL,
-  dpi = 300
+  dpi = 300,
+  ...
 )
 }
 \arguments{
 \item{plot}{A ggplot}
 
+\item{file.name}{The name of the file without format}
+
 \item{format}{The file format (default .png)}
+
+\item{dpi}{Default 300}
 }
 \description{
 Saves a ggplot to the specified format and prints to the viewer plane
