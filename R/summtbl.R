@@ -8,7 +8,6 @@
 #' @return A gtsummary table
 #' @export
 #'
-#' @examples
 #'
 #'
 summ.tbl <- function(dat, summ.by = NULL, dp = 1, caption = NULL){

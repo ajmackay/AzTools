@@ -11,7 +11,7 @@
 #' @export
 #'
 wilson_ci <- function(num, denom, ...) {
-  wilson_score <- map2(.x = num, .y =  denom, function(x, y) {
+  wilson_score <- purrr::map2(.x = num, .y =  denom, function(x, y) {
     prop.test(x, y, correct = TRUE, ...) %>% tidy()
   })
   # browser()

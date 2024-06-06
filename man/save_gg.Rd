@@ -9,7 +9,8 @@ save_gg(
   file.name = NULL,
   format = "png",
   overwrite = TRUE,
-  dir = "outputs/figs/",
+  dir = "outputs/plots/",
+  open = TRUE,
   width = 9,
   height = NULL,
   dpi = 300,
@@ -23,7 +24,18 @@ save_gg(
 
 \item{format}{The file format (default .png)}
 
+\item{overwrite}{Overwrite existing file of same file.name (default == TRUE)}
+
+\item{dir}{Directory where to save image. Default output/figs}
+
+\item{width}{Width of plot. Default is 9}
+
+\item{height}{Height of plot. Default is widdth * 9/16}
+
 \item{dpi}{Default 300}
+}
+\value{
+Image file
 }
 \description{
 Saves a ggplot to the specified format and prints to the viewer plane

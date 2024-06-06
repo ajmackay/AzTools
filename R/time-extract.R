@@ -7,7 +7,6 @@
 #' @return A dataframe with specified datetime units
 #' @export
 #'
-#' @examples
 extract_time <- function(data, date_var, time_units) {
   data %>%
     timetk::tk_augment_timeseries_signature({{date_var}}) |>

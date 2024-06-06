@@ -1,3 +1,44 @@
+#' Create a Date Reference Table
+#'
+#' @param start Start Date
+#' @param end End Date
+#' @param by The interval for which the date reference should be created by (determined by seq.Date())
+#'
+#' @return Tibble
+#' @export
+
+create_date_ref <- function(start, end, by) {
+
+  # Check Start and End are Dates
+  if(!any(str_detect(class(start), "POSIXt|Date"))) {
+    start <- dmy(start, tz = .tz)
+    if(is.na(start)) {
+      stop("Start date must either be a character string with format d/m/Y or a datetime object")
+    }
+  }
+  if(!any(str_detect(class(end), "POSIXt|Date"))) {
+    end <- dmy(end, tz = .tz)
+    if(is.na(end)) {
+      stop("End date must either be a character string with format d/m/Y or a datetime object")
+    }
+  }
+
+  # Create Table
+  # browser()
+  tibble(period.start = seq.Date(as_date(start), as_date(end), by = by)) %>%
+    mutate(period.start = force_tz(period.start, .tz),
+           month = period_label(period.start, "month"),
+           month.year = period_label(period.start, "month.year"),
+           fin.year = period_label(period.start, "fy"),
+           fin.quarter = period_label(period.start, "finquarter"),
+           fin.period = str_c(fin.quarter, "_", str_remove(fin.year, "FY")),
+           period.end  = period.start + months(3) - 1,
+           period.int = interval(period.start, period.end)
+    )
+
+}
+
+
 #' Paste Path
 #'
 #' @return string

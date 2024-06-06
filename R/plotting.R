@@ -49,17 +49,17 @@ theme_clean <- function(base_size = 12,
 #'
 #' @param plot A ggplot
 #' @param file.name The name of the file without format
-#' @param overwrite
-#' @param dir
-#' @param width
-#' @param height
+#' @param overwrite Overwrite existing file of same file.name (default == TRUE)
+#' @param dir Directory where to save image. Default output/figs
+#' @param width Width of plot. Default is 9
+#' @param height Height of plot. Default is widdth * 9/16
 #' @param dpi Default 300
 #' @param format The file format (default .png)
 #'
-#' @return
+#' @return Image file
 #' @export save_gg
 #'
-save_gg <- function(plot, file.name = NULL, format = "png", overwrite = TRUE, dir = 'outputs/figs/', width = 9, height = NULL, dpi = 300, ...) {
+save_gg <- function(plot, file.name = NULL, format = "png", overwrite = TRUE, dir = 'outputs/plots/', open = TRUE, width = 9, height = NULL, dpi = 300, ...) {
   # browser()
   if(!"ggplot" %in% class(plot)) {
     stop("Object does not appear to be a ggplot object. Please try again.")
@@ -109,7 +109,7 @@ save_gg <- function(plot, file.name = NULL, format = "png", overwrite = TRUE, di
   cat(crayon::green(str_glue("File Saved at {dir}{new_name}")))
 
   # Open the plot
-  shell.exec(normalizePath(str_c(dir, new_name)))
+  if(open) shell.exec(normalizePath(str_c(dir, new_name)))
 }
 
 
