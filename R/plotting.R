@@ -127,7 +127,7 @@ save_gg <- function(plot, file.name = NULL, format = "png", overwrite = TRUE, di
 #' @return An Image
 #' @export view_gg
 #'
-view_gg <- function(plot, width = 9, height = NULL, dpi = 300) {
+view_gg <- function(plot, width = 9, height = NULL, dpi = 300, ...) {
   if(!"ggplot" %in% class(plot)) {
     stop("Object does not appear to be a ggplot object. Please try again.")
   }
@@ -141,7 +141,8 @@ view_gg <- function(plot, width = 9, height = NULL, dpi = 300) {
     width = width,
     height = height,
     dpi = 300,
-    bg = NULL
+    bg = NULL,
+    ...
   ) %>% suppressWarnings()
 
   print(plot)
