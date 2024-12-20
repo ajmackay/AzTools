@@ -4,7 +4,7 @@
 \alias{view_gg}
 \title{view_gg}
 \usage{
-view_gg(plot, width = 9, height = NULL, dpi = 300)
+view_gg(plot, width = 9, height = NULL, dpi = 300, ...)
 }
 \arguments{
 \item{plot}{ggplot object}

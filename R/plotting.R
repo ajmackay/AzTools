@@ -1,3 +1,41 @@
+#' Solarised Theme
+#'
+#' @param bg.colour Background Colour of the plot
+#' @param ... Additional arguments for ggplot2::theme()
+#'
+#' @returns ggplot theme
+#' @export
+#'
+theme_solar <- function(bg.colour = "#fcf6e4", ...) {
+  blank <- element_blank()
+
+    theme(panel.grid.major.x = blank,
+          panel.grid.minor.x = blank,
+          panel.grid.minor.y = element_line(linetype = "dashed", colour = "grey90"),
+          panel.grid.major.y = element_line(linetype = "solid", colour = "grey90"),
+
+          axis.ticks.x = element_line(),
+          plot.background = element_rect(bg.colour),
+
+          legend.background = blank,
+          legend.key.size = unit(15, units = "mm"),
+          legend.text = element_text(size = 12),
+
+          plot.title = element_text(family = "Poppins", size = 22, face = "bold", vjust = 0.3, hjust = 0, lineheight = 1, margin = margin(b = 2, unit = "mm")),
+          plot.title.position = "plot",
+
+          plot.subtitle = ggtext::element_markdown(hjust = 0,
+                                                   margin = margin(t = 2, b = 2, unit = "mm") # Increases the space between the subtitle, title and plot
+          ),
+
+          plot.caption = element_text(size = rel(0.5), face = "plain", hjust = 1),
+          plot.caption.position = "plot",
+          panel.border = element_rect(colour = "grey80", fill = NA, linewidth = 1),
+          # plot.subtitle = element_text(hjust = 0),
+          ...)
+}
+
+
 #' Clean Theme
 #' @description
 #' A simple and clean theme for ggplot
