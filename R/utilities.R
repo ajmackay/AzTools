@@ -1,3 +1,22 @@
+#' Unnest All
+#'
+#' @param df dataframe with nested columns
+#'
+#' @returns dataframe
+#' @export
+
+unnest_all <- function(df) {
+  list_columns <- df %>% keep(is.list) %>% discard(~any(map_lgl(., is_empty))) %>% names()
+  if (length(list_columns) == 0) {
+    return(df)
+  }
+  for (l in list_columns) {
+    df <- df %>% unnest_wider(l, names_sep = ".")
+  }
+  unnest_all(df)
+}
+
+
 #' Create a Date Reference Table
 #'
 #' @param start Start Date
